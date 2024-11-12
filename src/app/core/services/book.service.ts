@@ -20,21 +20,21 @@ export class BookService {
   }
 
   private groupBooksByDecade(books: Book[]): (string | Book)[] {
-    const sortedBooks = this.getSortedByPublishYear(books);
-    const groupedBooks = this.getGroupedByDecade(sortedBooks);
+    const sortedBooks = this.sortByPublishYear(books);
+    const groupedBooks = this.groupByDecade(sortedBooks);
 
     return this.createPublicationIntervals(groupedBooks, sortedBooks);
   }
 
-  private getSortedByPublishYear(books: Book[]) {
+  private sortByPublishYear(books: Book[]) {
     return books.sort((firstBook, secondBook) =>
       firstBook.publishYear < secondBook.publishYear ? 1 : -1
     );
   }
 
-  private getGroupedByDecade(sortedBooks: Book[]): Record<number, Book[]> {
+  private groupByDecade(sortedBooks: Book[]): Record<number, Book[]> {
     return sortedBooks.reduce<Record<number, Book[]>>((group, book) => {
-      const decade = book.publishYear !== null ? this.getDecade(book) : NaN;
+      const decade = this.getDecade(book);
       group[decade] = group[decade] ?? [];
       group[decade].push(book);
       return group;
@@ -42,10 +42,6 @@ export class BookService {
   }
 
   private getDecade(book: Book) {
-    // TODO: discuss and either remove or uncomment, when we want to handle publishYear as date string
-    /* if (typeof book.publishYear === 'string') {
-      return Math.floor(new Date(book.publishYear).getFullYear() / 10) * 10;
-    }*/
     return Math.floor(book.publishYear / 10) * 10;
   }
 
@@ -71,11 +67,6 @@ export class BookService {
       } else if (emptyDecadeStart === null) {
         emptyDecadeStart = decade;
       }
-    }
-
-    if (groupedBooks[NaN]) {
-      result.push('No valid publish year');
-      result.push(...groupedBooks[NaN]);
     }
 
     return result;
