@@ -86,7 +86,7 @@ describe('AppComponent', () => {
     expect(bookService.getBooksGroupedByDecade).toHaveBeenCalledTimes(2);
   });
 
-  it(`should neither add a new book nor refresh books, when the dialog closes without emitting a boo`, () => {
+  it(`should neither add a new book nor refresh books, when the dialog closes without emitting a book`, () => {
     const dialogClosed = new Subject<Book | undefined>();
     spyOn(TestBed.inject(MatDialog), 'open').and.returnValue(
       createSpyObj('MatDialog', { afterClosed: dialogClosed })
