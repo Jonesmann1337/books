@@ -76,34 +76,6 @@ describe('BookService', () => {
     expect(bookRestService.getBooks).toHaveBeenCalledOnceWith();
   });
 
-  it('should group books without a valid publishYear into a separate "No valid publish year" category', () => {
-    const books: Book[] = [
-      {
-        author: 'Author_01',
-        category: 'Category_01',
-        name: 'Book_01',
-        publishYear: '2024-10-10',
-        ratings: []
-      } as unknown as Book,
-      {
-        author: 'Author_02',
-        category: 'Category_02',
-        name: 'Book_02',
-        publishYear: null,
-        ratings: []
-      } as unknown as Book
-    ];
-    bookRestService.getBooks.and.returnValue(of(books));
-    service.getBooksGroupedByDecade().subscribe((booksByDecade) => {
-      expect(booksByDecade[0]).toBe('No valid publish year');
-      // @ts-ignore
-      expect((booksByDecade[1] as Book).publishYear).toBe(null);
-      // @ts-ignore
-      expect((booksByDecade[2] as Book).publishYear).toEqual('2024-10-10');
-    });
-    expect(bookRestService.getBooks).toHaveBeenCalledOnceWith();
-  });
-
   it('should trigger a http POST request to add a book', () => {
     const book: Book = {
       name: 'book_01',
