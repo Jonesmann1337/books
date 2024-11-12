@@ -1,7 +1,5 @@
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { Book } from '../../core/models/book.model';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BookService } from '../../core/services/book.service';
 import { MatTableModule } from '@angular/material/table';
 import { RatingPipe } from '../../core/pipes/rating.pipe';
 
@@ -10,12 +8,10 @@ import { RatingPipe } from '../../core/pipes/rating.pipe';
   standalone: true,
   templateUrl: './book-list.component.html',
   imports: [MatTableModule, RatingPipe],
-  styleUrl: './book-list.component.scss'
+  styleUrl: './book-list.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BookListComponent implements OnInit {
-  private readonly bookService = inject(BookService);
-  private readonly destroyRef = inject(DestroyRef);
-
+export class BookListComponent {
   protected readonly displayedColumns: (keyof Book)[] = [
     'name',
     'author',
@@ -23,16 +19,7 @@ export class BookListComponent implements OnInit {
     'publishYear',
     'ratings'
   ];
-  protected readonly booksByDecade = signal<(string | Book)[]>([]);
-
-  ngOnInit() {
-    this.bookService
-      .getBooksGroupedByDecade()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((books) => {
-        this.booksByDecade.set(books);
-      });
-  }
+  readonly booksByDecade = input.required<(string | Book)[]>();
 
   protected isDecade(_: number, row: string | Book): row is string {
     return typeof row === 'string';

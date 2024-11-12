@@ -1,34 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BookListComponent } from './book-list.component';
-import { of } from 'rxjs';
-import { Book } from '../../core/models/book.model';
-import { BookService } from '../../core/services/book.service';
-import createSpyObj = jasmine.createSpyObj;
-import SpyObj = jasmine.SpyObj;
 
 describe('BookListComponent', () => {
   let component: BookListComponent;
   let fixture: ComponentFixture<BookListComponent>;
-  let bookService: SpyObj<BookService>;
 
   beforeEach(async () => {
-    bookService = createSpyObj('BookService', {
-      getBooksGroupedByDecade: of<(string | Book)[]>([])
-    });
-
     await TestBed.configureTestingModule({
-      imports: [BookListComponent],
-      providers: [
-        {
-          provide: BookService,
-          useValue: bookService
-        }
-      ]
+      imports: [BookListComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(BookListComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('booksByDecade', []);
   });
 
   it('should be created', () => {
@@ -55,19 +40,17 @@ describe('BookListComponent', () => {
     expect(columnElement.getAttribute('colspan')).toBe('5');
   });
 
-  it('should display a table containing all books grouped by decade', () => {
-    bookService.getBooksGroupedByDecade.and.returnValue(
-      of([
-        '1990s',
-        {
-          name: `Harry Potter and the Sorcerer's Stone`,
-          author: 'Joanne K. Rowling',
-          category: 'Fantasy',
-          ratings: [{ source: 'Goodreads', value: 5 }],
-          publishYear: 1997
-        }
-      ])
-    );
+  it('should display a table containing all books grouped by decade (AC.01.2)', () => {
+    fixture.componentRef.setInput('booksByDecade', [
+      '1990s',
+      {
+        name: `Harry Potter and the Sorcerer's Stone`,
+        author: 'Joanne K. Rowling',
+        category: 'Fantasy',
+        ratings: [{ source: 'Goodreads', value: 5 }],
+        publishYear: 1997
+      }
+    ]);
     fixture.detectChanges();
 
     const rows: HTMLTableRowElement[] = fixture.nativeElement.querySelectorAll('tbody tr');

@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Book } from '../models/book.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,5 +12,9 @@ export class BookRestService {
 
   getBooks() {
     return this.httpClient.get<Book[]>(`${this.baseUrl}/books`);
+  }
+
+  postBook(book: Book): Observable<void> {
+    return this.httpClient.post<void>(`${this.baseUrl}/books`, book);
   }
 }
