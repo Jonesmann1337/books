@@ -21,7 +21,7 @@ describe('BookRestService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should fetch books from correct REST endpoint', () => {
+  it('should fetch books from correct REST endpoint (AC.01.1)', () => {
     const httpGetSpy = spyOn(httpClient, 'get').and.returnValue(of([]));
 
     service.getBooks().subscribe(() => {

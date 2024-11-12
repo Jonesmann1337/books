@@ -29,7 +29,7 @@ describe('BookService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should fetch books and return a list containing books grouped by decade and sorted by publishYear', () => {
+  it('should fetch books and return a list containing books grouped by decade and sorted by publishYear (AC.01.2 - AC.01.5)', () => {
     const unsortedBooks: Book[] = [
       {
         author: 'Author_01',

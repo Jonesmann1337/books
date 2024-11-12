@@ -40,7 +40,7 @@ describe('BookListComponent', () => {
     expect(columnElement.getAttribute('colspan')).toBe('5');
   });
 
-  it('should display a table containing all books grouped by decade', () => {
+  it('should display a table containing all books grouped by decade (AC.01.2)', () => {
     fixture.componentRef.setInput('booksByDecade', [
       '1990s',
       {

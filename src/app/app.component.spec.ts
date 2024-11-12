@@ -5,6 +5,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BookService } from './core/services/book.service';
 import { of } from 'rxjs';
 import { Book } from './core/models/book.model';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 
@@ -19,7 +20,7 @@ describe('AppComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [AppComponent, NoopAnimationsModule],
       providers: [
         {
           provide: BookService,
@@ -46,21 +47,20 @@ describe('AppComponent', () => {
     expect(fixture.nativeElement.querySelector('h3')?.textContent).toContain('List of books');
   });
 
-  it('should load books grouped by decade', () => {
+  it('should load books grouped by decade (AC.01.1)', () => {
     expect(bookService.getBooksGroupedByDecade).toHaveBeenCalledOnceWith();
   });
 
-  it('should show "Add a Book" button', () => {
+  it('should show "Add a Book" button (AC.02.1)', () => {
     const addBookButton: HTMLButtonElement =
       fixture.nativeElement.querySelector('button.add-book-btn');
     expect(addBookButton.textContent).toBe('Add a Book');
   });
 
-  it('should open the book addition modal', async () => {
+  it('should open the book addition modal (AC.02.1)', () => {
     const addBookButton: HTMLButtonElement =
       fixture.nativeElement.querySelector('button.add-book-btn');
     addBookButton.click();
-    await fixture.whenStable();
     const modal = document.querySelector('app-book-addition-modal');
     expect(modal).toBeTruthy();
   });
