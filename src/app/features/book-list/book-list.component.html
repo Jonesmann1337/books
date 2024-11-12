@@ -1,32 +1,39 @@
-<table mat-table [dataSource]="books()" class="mat-elevation-z24">
+<table mat-table [dataSource]="booksByDecade()" class="mat-elevation-z24">
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef>Name</th>
-    <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    <td mat-cell *matCellDef="let book">{{ book.name }}</td>
   </ng-container>
 
   <ng-container matColumnDef="author">
     <th mat-header-cell *matHeaderCellDef>Author</th>
-    <td mat-cell *matCellDef="let element">{{ element.author }}</td>
+    <td mat-cell *matCellDef="let book">{{ book.author }}</td>
   </ng-container>
 
   <ng-container matColumnDef="category">
     <th mat-header-cell *matHeaderCellDef>Category</th>
-    <td mat-cell *matCellDef="let element">{{ element.category }}</td>
+    <td mat-cell *matCellDef="let book">{{ book.category }}</td>
   </ng-container>
 
   <ng-container matColumnDef="publishYear">
     <th mat-header-cell *matHeaderCellDef>Publish year</th>
-    <td mat-cell *matCellDef="let element">{{ element.publishYear }}</td>
+    <td mat-cell *matCellDef="let book">{{ book.publishYear }}</td>
   </ng-container>
 
   <ng-container matColumnDef="ratings">
     <th mat-header-cell *matHeaderCellDef>Ratings</th>
-    <td mat-cell *matCellDef="let element">{{ element.ratings | rating }}</td>
+    <td mat-cell *matCellDef="let book">{{ book.ratings | rating }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="decade">
+    <td mat-cell [attr.colspan]="displayedColumns.length" *matCellDef="let decade">
+      <strong>{{ decade }}</strong>
+    </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   <tr *matNoDataRow>
-    <td class="no-books" [attr.colspan]="displayedColumns.length">No books to display.</td>
+    <td class="no-books" [attr.colspan]="displayedColumns.length">No books available</td>
   </tr>
+  <tr mat-row *matRowDef="let row; columns: ['decade']; when: isDecade"></tr>
 </table>

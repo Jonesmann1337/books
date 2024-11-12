@@ -23,14 +23,18 @@ export class BookListComponent implements OnInit {
     'publishYear',
     'ratings'
   ];
-  protected readonly books = signal<Book[]>([]);
+  protected readonly booksByDecade = signal<(string | Book)[]>([]);
 
   ngOnInit() {
     this.bookService
-      .getBooks()
+      .getBooksGroupedByDecade()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((books) => {
-        this.books.set(books);
+        this.booksByDecade.set(books);
       });
+  }
+
+  protected isDecade(_: number, row: string | Book): row is string {
+    return typeof row === 'string';
   }
 }

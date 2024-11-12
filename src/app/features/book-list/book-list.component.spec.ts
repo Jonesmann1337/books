@@ -14,7 +14,7 @@ describe('BookListComponent', () => {
 
   beforeEach(async () => {
     bookService = createSpyObj('BookService', {
-      getBooks: of<Book[]>([])
+      getBooksGroupedByDecade: of<(string | Book)[]>([])
     });
 
     await TestBed.configureTestingModule({
@@ -51,13 +51,14 @@ describe('BookListComponent', () => {
     fixture.detectChanges();
 
     const columnElement: HTMLTableColElement = fixture.nativeElement.querySelector('tbody > tr td');
-    expect(columnElement.textContent).toBe('No books to display.');
+    expect(columnElement.textContent).toBe('No books available');
     expect(columnElement.getAttribute('colspan')).toBe('5');
   });
 
-  it('should display a table containing all books', () => {
-    bookService.getBooks.and.returnValue(
+  it('should display a table containing all books grouped by decade', () => {
+    bookService.getBooksGroupedByDecade.and.returnValue(
       of([
+        '1990s',
         {
           name: `Harry Potter and the Sorcerer's Stone`,
           author: 'Joanne K. Rowling',
@@ -70,13 +71,15 @@ describe('BookListComponent', () => {
     fixture.detectChanges();
 
     const rows: HTMLTableRowElement[] = fixture.nativeElement.querySelectorAll('tbody tr');
-    expect(rows.length).toBe(1);
+    expect(rows.length).toBe(2);
 
-    const firstRow = rows[0];
-    expect(firstRow.children[0].textContent).toBe(`Harry Potter and the Sorcerer's Stone`);
-    expect(firstRow.children[1].textContent).toBe('Joanne K. Rowling');
-    expect(firstRow.children[2].textContent).toBe('Fantasy');
-    expect(firstRow.children[3].textContent).toBe('1997');
-    expect(firstRow.children[4].textContent).toBe('5 (Goodreads)');
+    const decadeRow = rows[0];
+    const bookRow = rows[1];
+    expect(decadeRow.children[0].textContent).toBe(`1990s`);
+    expect(bookRow.children[0].textContent).toBe(`Harry Potter and the Sorcerer's Stone`);
+    expect(bookRow.children[1].textContent).toBe('Joanne K. Rowling');
+    expect(bookRow.children[2].textContent).toBe('Fantasy');
+    expect(bookRow.children[3].textContent).toBe('1997');
+    expect(bookRow.children[4].textContent).toBe('5 (Goodreads)');
   });
 });

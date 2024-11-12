@@ -29,7 +29,7 @@ describe('BookService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should fetch books and return all books sorted by publishYear', () => {
+  it('should fetch books and return a list containing books grouped by decade and sorted by publishYear', () => {
     const unsortedBooks: Book[] = [
       {
         author: 'Author_01',
@@ -61,11 +61,45 @@ describe('BookService', () => {
       }
     ];
     bookRestService.getBooks.and.returnValue(of(unsortedBooks));
-    service.getBooks().subscribe((books) => {
-      expect(books[0].publishYear).toBe(2023);
-      expect(books[1].publishYear).toBe(2014);
-      expect(books[2].publishYear).toBe(1998);
-      expect(books[3].publishYear).toBe(1958);
+    service.getBooksGroupedByDecade().subscribe((booksByDecade) => {
+      expect(booksByDecade[0]).toBe('2020s');
+      expect((booksByDecade[1] as Book).publishYear).toBe(2023);
+      expect(booksByDecade[2]).toBe('2010s');
+      expect((booksByDecade[3] as Book).publishYear).toBe(2014);
+      expect(booksByDecade[4]).toBe('2000s (No publications)');
+      expect(booksByDecade[5]).toBe('1990s');
+      expect((booksByDecade[6] as Book).publishYear).toBe(1998);
+      expect(booksByDecade[7]).toBe('1980s – 1960s (No publications)');
+      expect(booksByDecade[8]).toBe('1950s');
+      expect((booksByDecade[9] as Book).publishYear).toBe(1958);
+    });
+    expect(bookRestService.getBooks).toHaveBeenCalledOnceWith();
+  });
+
+  it('should group books without a valid publishYear into a separate "No valid publish year" category', () => {
+    const books: Book[] = [
+      {
+        author: 'Author_01',
+        category: 'Category_01',
+        name: 'Book_01',
+        publishYear: '2024-10-10',
+        ratings: []
+      } as unknown as Book,
+      {
+        author: 'Author_02',
+        category: 'Category_02',
+        name: 'Book_02',
+        publishYear: null,
+        ratings: []
+      } as unknown as Book
+    ];
+    bookRestService.getBooks.and.returnValue(of(books));
+    service.getBooksGroupedByDecade().subscribe((booksByDecade) => {
+      expect(booksByDecade[0]).toBe('No valid publish year');
+      // @ts-ignore
+      expect((booksByDecade[1] as Book).publishYear).toBe(null);
+      // @ts-ignore
+      expect((booksByDecade[2] as Book).publishYear).toEqual('2024-10-10');
     });
     expect(bookRestService.getBooks).toHaveBeenCalledOnceWith();
   });
