@@ -1,0 +1,10 @@
+.app-wrapper {
+  padding: 2rem;
+
+  button.add-book-btn {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
