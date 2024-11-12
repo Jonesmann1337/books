@@ -31,7 +31,7 @@ describe('BookAdditionModalComponent', () => {
     expect(buttons[1].textContent).toBe('Add');
   });
 
-  it('should show inputs with labels', () => {
+  it('should show inputs with labels (AC.02.2)', () => {
     const inputs: HTMLInputElement[] = fixture.nativeElement.querySelectorAll('input');
     const labels: HTMLInputElement[] = fixture.nativeElement.querySelectorAll('mat-label');
 
@@ -43,5 +43,14 @@ describe('BookAdditionModalComponent', () => {
     expect(labels[2].textContent).toBe('Publish year');
     expect(inputs[3]).toBeTruthy();
     expect(labels[3].textContent).toBe('Genre');
+  });
+
+  it('should set all inputs as required (AC.02.3)', () => {
+    const inputs: HTMLInputElement[] = fixture.nativeElement.querySelectorAll('input');
+
+    expect(inputs[0].getAttribute('aria-required')).toEqual('true');
+    expect(inputs[1].getAttribute('aria-required')).toEqual('true');
+    expect(inputs[2].getAttribute('aria-required')).toEqual('true');
+    expect(inputs[3].getAttribute('aria-required')).toEqual('true');
   });
 });

@@ -3,19 +3,19 @@
   <form #form="ngForm">
     <mat-form-field>
       <mat-label>Title</mat-label>
-      <input name="title" matInput type="text" [(ngModel)]="book().name" />
+      <input name="title" matInput type="text" required [(ngModel)]="book().name" />
     </mat-form-field>
     <mat-form-field>
       <mat-label>Author</mat-label>
-      <input name="author" matInput type="text" [(ngModel)]="book().author" />
+      <input name="author" matInput type="text" required [(ngModel)]="book().author" />
     </mat-form-field>
     <mat-form-field>
       <mat-label>Publish year</mat-label>
-      <input name="publish-year" matInput type="number" [(ngModel)]="book().publishYear" />
+      <input name="publish-year" matInput type="number" required [(ngModel)]="book().publishYear" />
     </mat-form-field>
     <mat-form-field>
       <mat-label>Genre</mat-label>
-      <input name="genre" matInput type="text" [(ngModel)]="book().category" />
+      <input name="genre" matInput type="text" required [(ngModel)]="book().category" />
     </mat-form-field>
   </form>
 </mat-dialog-content>
