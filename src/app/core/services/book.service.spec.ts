@@ -12,7 +12,7 @@ describe('BookService', () => {
   let bookRestService: SpyObj<BookRestService>;
 
   beforeEach(() => {
-    bookRestService = createSpyObj('BookRestService', ['getBooks']);
+    bookRestService = createSpyObj('BookRestService', ['getBooks', 'postBook']);
 
     TestBed.configureTestingModule({
       providers: [
@@ -102,5 +102,18 @@ describe('BookService', () => {
       expect((booksByDecade[2] as Book).publishYear).toEqual('2024-10-10');
     });
     expect(bookRestService.getBooks).toHaveBeenCalledOnceWith();
+  });
+
+  it('should trigger a http POST request to add a book', () => {
+    const book: Book = {
+      name: 'book_01',
+      author: 'author_01',
+      category: 'category_01',
+      ratings: [],
+      publishYear: 2024
+    };
+
+    service.addBook(book);
+    expect(bookRestService.postBook).toHaveBeenCalledOnceWith(book);
   });
 });

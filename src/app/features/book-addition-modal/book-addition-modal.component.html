@@ -11,7 +11,15 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Publish year</mat-label>
-      <input name="publish-year" matInput type="number" required [(ngModel)]="book().publishYear" />
+      <input
+        name="publish-year"
+        matInput
+        type="number"
+        inputmode="numeric"
+        required
+        (keydown)="restrictToInteger($event)"
+        [(ngModel)]="book().publishYear"
+      />
     </mat-form-field>
     <mat-form-field>
       <mat-label>Genre</mat-label>

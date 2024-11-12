@@ -13,6 +13,7 @@ import { Book } from './core/models/book.model';
 import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { BookAdditionModalComponent } from './features/book-addition-modal/book-addition-modal.component';
+import { EMPTY, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -42,6 +43,21 @@ export class AppComponent implements OnInit {
   }
 
   openModal() {
-    this.dialog.open(BookAdditionModalComponent);
+    const dialogRef = this.dialog.open(BookAdditionModalComponent);
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        switchMap((book?: Book) => {
+          if (book) {
+            return this.bookService.addBook(book);
+          }
+          return EMPTY;
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(() => {
+        this.refreshBooks();
+      });
   }
 }

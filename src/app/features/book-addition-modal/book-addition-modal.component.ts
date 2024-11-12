@@ -22,4 +22,10 @@ export class BookAdditionModalComponent {
     category: '',
     author: ''
   });
+
+  protected restrictToInteger(event: KeyboardEvent): void {
+    if (event.key === '.' || event.key === ',') {
+      event.preventDefault();
+    }
+  }
 }

@@ -9,6 +9,10 @@ import { Book } from '../models/book.model';
 export class BookService {
   private readonly bookRestService = inject(BookRestService);
 
+  addBook(book: Book) {
+    return this.bookRestService.postBook(book);
+  }
+
   getBooksGroupedByDecade(): Observable<(string | Book)[]> {
     return this.bookRestService
       .getBooks()
