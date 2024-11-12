@@ -1,4 +1,5 @@
 <div class="app-wrapper">
   <h3>List of books</h3>
-  <app-book-list />
+  <app-book-list [booksByDecade]="booksByDecade()" />
+  <button mat-raised-button class="add-book-btn" (click)="openModal()">Add a Book</button>
 </div>
